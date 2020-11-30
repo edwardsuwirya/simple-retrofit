@@ -1,26 +1,28 @@
 package com.enigmacamp.myretro.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.enigmacamp.myretro.data.models.Post
+import androidx.lifecycle.liveData
 import com.enigmacamp.myretro.data.repository.JsonPlaceHolderRepo
-import kotlinx.coroutines.launch
-import retrofit2.Response
+import com.enigmacamp.myretro.utils.AppResource
+import kotlinx.coroutines.Dispatchers
 
 class MainViewModel(private val repository: JsonPlaceHolderRepo) : ViewModel() {
-    var _response: MutableLiveData<Response<Post>> = MutableLiveData()
-
-    val response: LiveData<Response<Post>>
-        get() {
-            return _response
-        }
-
-    fun getPost() {
-        viewModelScope.launch {
-            val jsonPlaceHolderResponse = repository.getPost()
-            _response.value = jsonPlaceHolderResponse
+    fun getPost() = liveData(Dispatchers.IO) {
+        emit(AppResource.loading(data = null))
+        try {
+            val response = repository.getPost()
+            if (response.isSuccessful) {
+                emit(AppResource.success(data = response.body()))
+            } else {
+                emit(
+                    AppResource.error(
+                        data = null,
+                        message = response.errorBody().toString() ?: "Error Occured"
+                    )
+                )
+            }
+        } catch (e: Exception) {
+            emit(AppResource.error(data = null, message = e.message ?: "Error Occured"))
         }
     }
 }
