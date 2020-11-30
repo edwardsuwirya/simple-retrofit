@@ -7,11 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.enigmacamp.myretro.data.models.Post
 import com.enigmacamp.myretro.data.repository.JsonPlaceHolderRepo
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class MainViewModel(private val repository: JsonPlaceHolderRepo) : ViewModel() {
-    var _response: MutableLiveData<Post> = MutableLiveData()
+    var _response: MutableLiveData<Response<Post>> = MutableLiveData()
 
-    val response: LiveData<Post>
+    val response: LiveData<Response<Post>>
         get() {
             return _response
         }

@@ -24,7 +24,12 @@ class MainActivity : AppCompatActivity() {
         }).get(MainViewModel::class.java)
         mainViewModel.getPost()
         mainViewModel.response.observe(this, {
-            Log.d("MainActivity", it.toString())
+            if (it.isSuccessful) {
+                Log.d("MainActivity", it.body().toString())
+            } else {
+                Log.e("MainActivity", it.errorBody().toString())
+            }
+
         })
     }
 }
