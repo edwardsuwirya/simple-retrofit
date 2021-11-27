@@ -8,7 +8,7 @@ data class AppResource<out T>(val appStatus: AppStatus, val data: T?, val messag
         fun <T> error(data: T, message: String?): AppResource<T> =
             AppResource(appStatus = AppStatus.ERROR, data = null, message = message)
 
-        fun <T> loading(data: T): AppResource<T> =
-            AppResource(appStatus = AppStatus.LOADING, data = data, message = null)
+        fun <T> loading(): AppResource<T> =
+            AppResource(appStatus = AppStatus.LOADING, data = null, message = null)
     }
 }
