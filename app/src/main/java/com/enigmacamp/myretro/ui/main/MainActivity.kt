@@ -27,12 +27,13 @@ class MainActivity : AppCompatActivity() {
             }
 
         }).get(MainViewModel::class.java)
+        mainViewModel.getPost()
         subscribe()
     }
 
 
     private fun subscribe() {
-        mainViewModel.getPost().observe(this, {
+        mainViewModel.postingLiveData.observe(this, {
             it?.let {
                 when (it) {
                     is AppResource.Loading -> outputTextView.text = "Loading..."
