@@ -18,7 +18,12 @@ android {
     }
 
     buildTypes {
+        debug{
+            buildConfigField "String", "BASE_URL", "\"https://jsonplaceholder.typicode.com\""
+        }
         release {
+            //Contoh misalnya production beda server
+            buildConfigField "String", "BASE_URL", "\"https://production.jsonplaceholder.typicode.com\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }

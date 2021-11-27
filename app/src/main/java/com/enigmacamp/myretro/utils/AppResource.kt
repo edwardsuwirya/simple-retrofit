@@ -1,14 +1,7 @@
 package com.enigmacamp.myretro.utils
 
-data class AppResource<out T>(val appStatus: AppStatus, val data: T?, val message: String?) {
-    companion object {
-        fun <T> success(data: T): AppResource<T> =
-            AppResource(appStatus = AppStatus.SUCCESS, data = data, message = null)
-
-        fun <T> error(data: T, message: String?): AppResource<T> =
-            AppResource(appStatus = AppStatus.ERROR, data = null, message = message)
-
-        fun <T> loading(): AppResource<T> =
-            AppResource(appStatus = AppStatus.LOADING, data = null, message = null)
-    }
+sealed class AppResource<T>(val data: T? = null, val message: String? = null) {
+    class Success<T>(data: T?) : AppResource<T>(data)
+    class Loading() : AppResource<Nothing>()
+    class Error<T>(message: String, data: T? = null) : AppResource<T>(data, message)
 }

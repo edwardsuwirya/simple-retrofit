@@ -2,7 +2,6 @@ package com.enigmacamp.myretro.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -10,7 +9,7 @@ import com.enigmacamp.myretro.R
 import com.enigmacamp.myretro.data.models.Post
 import com.enigmacamp.myretro.data.repository.JsonPlaceHolderRepo
 import com.enigmacamp.myretro.data.repository.PostingRepo
-import com.enigmacamp.myretro.utils.AppStatus
+import com.enigmacamp.myretro.utils.AppResource
 
 class MainActivity : AppCompatActivity() {
     private lateinit var repo: PostingRepo
@@ -35,14 +34,14 @@ class MainActivity : AppCompatActivity() {
     private fun subscribe() {
         mainViewModel.getPost().observe(this, {
             it?.let {
-                when (it.appStatus) {
-                    AppStatus.LOADING -> outputTextView.text = "Loading..."
-                    AppStatus.SUCCESS -> {
-                        val post = it.data as Post
-                        outputTextView.text = post.title
+                when (it) {
+                    is AppResource.Loading -> outputTextView.text = "Loading..."
+                    is AppResource.Success -> {
+                        it.data?.apply {
+                            outputTextView.text = body
+                        }
                     }
-                    AppStatus.ERROR -> outputTextView.text = it.message
-
+                    is AppResource.Error -> outputTextView.text = it.message
                 }
             }
         })
