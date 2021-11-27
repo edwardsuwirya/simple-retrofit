@@ -9,7 +9,7 @@ import kotlinx.coroutines.delay
 
 class MainViewModel(private val repository: PostingRepo) : ViewModel() {
     fun getPost() = liveData(Dispatchers.IO) {
-        emit(AppResource.Loading())
+        emit(AppResource.Loading)
         try {
             val response = repository.getPost()
             delay(1000)
